@@ -1,126 +1,137 @@
 package HW1;
 
-// This is a class used to create new UPC codes to test
-// It does not need to be coded by students or even given to them
+// This is the starting version of the UPC-A scanner
+//   that needs to be filled in for the homework
 
-public class UPCcreator {
-
-
-	public static void main(String[] args) {
-		
-		// The number I want in the bar code
-		String number = "123456789012";
-		
-		String[] numPatL = new String[10];
-		numPatL[0] = "0001101";
-		numPatL[1] = "0011001";
-		numPatL[2] = "0010011";
-		numPatL[3] = "0111101";
-		numPatL[4] = "0100011";
-		numPatL[5] = "0110001";
-		numPatL[6] = "0101111";
-		numPatL[7] = "0111011";
-		numPatL[8] = "0110111";
-		numPatL[9] = "0001011";
-
-		// Create the inverses for the right side
-		String[] numPatR = new String[10];
-		for (int i=0; i<numPatL.length; i++) {
-
-			numPatR[i] = "";
-			for (int j=0; j<numPatL[i].length(); j++) {
-				if (numPatL[i].substring(j, j+1).compareTo("0") == 0) {
-					numPatR[i] = numPatR[i] + 1;
-				} else {
-					numPatR[i] = numPatR[i] + 0;
-				}
-				
-			}
-			//System.out.println(numPatL[i] + "\n" + numPatR[i] + "\n");
-		}
-		
-		
-		String pattern = "101";
-		
-		// Form the 0/1 string
-		for (int i=0; i<6; i++) {
-			int index = number.charAt(i) - '0';
-			pattern += numPatL[index];
-		}
-		
-		pattern += "01010";
+public class UPCstarting {
 	
-		for (int i=6; i<12; i++) {
-			int index = number.charAt(i) - '0';
-			pattern += numPatR[index];
-		}
+	//--------------------------------------------
+	// Scan in the bit pattern from the image
+	// Takes the filename of the image
+	// Returns an int array of the 95 scanned bits
+	//--------------------------------------------
+	public static int[] scanImage(String filename) {
 		
-		pattern += "101";
+		// YOUR CODE HERE....
 		
+	}
+	
+	//--------------------------------------------
+	// Finds the matching digit for the given pattern
+	// This is a helper method for decodeScan
+	// Takes the full 95 scanned pattern as well as
+	//   a starting location in that pattern where we
+	//   want to look
+	// Also takes in a boolean to indicate if this is a
+	//   left or right pattern
+	// Returns an int indicating which digit matches
+	//   Any pattern that doesn't match anything will be -1
+	//--------------------------------------------
+	public static int matchPattern(int[] scanPattern, int startIndex, boolean left) {
 		
-		System.out.println(pattern);
+		int[][] digitPat = {{0,0,0,1,1,0,1},
+				            {0,0,1,1,0,0,1},	
+				            {0,0,1,0,0,1,1},
+				            {0,1,1,1,1,0,1},
+				            {0,1,0,0,0,1,1},
+				            {0,1,1,0,0,0,1},
+				            {0,1,0,1,1,1,1},
+				            {0,1,1,1,0,1,1},
+				            {0,1,1,0,1,1,1},
+				            {0,0,0,1,0,1,1}};
 		
+		// YOUR CODE HERE....
 		
-		// If I want to reverse it...
-//		String test = "";
-//		for (int i=0; i<pattern.length(); i++) {
-//			test = pattern.substring(i, i+1) + test;
-//		}
-		//System.out.println(test);
-		//pattern = test;
+	}
+	
+	//--------------------------------------------
+	// Performs a full scan decode that turns all 95 bits
+	//   into 12 digits
+	// Takes the full 95 bit scanned pattern
+	// Returns an int array of 12 digits
+	//   If any digit scanned incorrectly it is returned as a -1
+	// If the start, middle, or end patterns are incorrect
+	//   it provides an error and exits
+	//--------------------------------------------
+	public static int[] decodeScan(int[] scanPattern) {
 		
-		// There should be 95 0/1 in the pattern
-		
-		// Now create the barcode image
-		DUImage barCode = new DUImage(200, 100);
-		
-		
-		// Each bar can be 1,2,3 or 4 times the xdim (we can set this) - this is 
-		//   called the module width
-		int moduleWidth = 2;
-		
-		// The start, end and guard patterns extend 5x the xdim lower than the other bars
-		// The first and last digits also extend this same distance down
-		// Not sure if this 5x includes the module width as well - would seem like it should...
-		
-		int barXoffset = 5;
-		for (int i=0; i<pattern.length(); i++) {
-		
-			// Select the bar color
-			int barColor = 0;
-			if (pattern.charAt(i) == '0') {
-				barColor = 255;  // 0s are white
-			} else {
-				barColor = 0;    // 1s are black
-			}
-		
-			// Make the bar
-			int barYoffset = 5;
-			int barLength;
-			
-			// Make the bar longer for the guards and the first/last character
-			barLength = 95;
-			if (!((i<10) || (i>=45 && i<50) || (i >= 85))) {
-				
-				// Commented out at the moment
-				// It looks better with the little blocks sticking down, but
-				// it then makes it obvious if it is upside down or not and I want
-				// that to be something they need to figure out in their code.
-				//barLength = 95 - (xdim * moduleWidth * 5);
-			}
-		
-			for (int z=0; z<moduleWidth; z++) {
-				for (int y=0; y<barLength; y++) {
-					barCode.setRGB((i*moduleWidth)+barXoffset+z, y+barYoffset, barColor, barColor, barColor);
-				}
-			}
-			
-		}
-		
-		barCode.write("barcode1Mutation.png");
-		
+		// YOUR CODE HERE...
 
 	}
+	
+	//--------------------------------------------
+	// Do the checksum of the digits here
+	// All digits are assumed to be in range 0..9
+	// Returns true if check digit is correct and false otherwise
+	//--------------------------------------------
+	public static boolean verifyCode(int[] digits) {
+		
+		//In the UPC-A system, the check digit is calculated as follows:
+		//	1.Add the digits in the even-numbered positions (zeroth, second, fourth, sixth, etc.) together and multiply by three.
+		//	2.Add the digits in the even-numbered positions (first, third, fifth, etc.) to the result.
+		//	3.Find the result modulo 10 (i.e. the remainder when divided by 10.. 10 goes into 58 5 times with 8 leftover).
+		//	4.If the result is not zero, subtract the result from ten.
 
+		// Note that what the UPC standard calls 'odd' are our evens since we are zero based and they are one based
+		
+		// YOUR CODE HERE...
+	}
+	
+	//--------------------------------------------
+	// The main method scans the image, decodes it,
+	//   and then validates it
+	//--------------------------------------------	
+	public static void main(String[] args) {
+	        // file name to process.
+	        // Note: change this to other files for testing
+	        String barcodeFileName = "barcode1.png";
+
+	        // optionally get file name from command-line args
+	        if(args.length == 1){
+		    barcodeFileName = args[0];
+		}
+		
+		// scanPattern is an array of 95 ints (0..1)
+		int[] scanPattern = scanImage(barcodeFileName);
+
+		// Display the bit pattern scanned from the image
+		System.out.println("Original scan");
+		for (int i=0; i<scanPattern.length; i++) {
+			System.out.print(scanPattern[i]);
+		}
+		System.out.println(""); // the \n
+				
+		
+		// digits is an array of 12 ints (0..9)
+		int[] digits = decodeScan(scanPattern);
+		
+		// YOUR CODE HERE TO HANDLE UPSIDE-DOWN SCANS
+		
+		
+		
+		
+		// Display the digits and check for scan errors
+		boolean scanError = false;
+		System.out.println("Digits");
+		for (int i=0; i<12; i++) {
+			System.out.print(digits[i] + " ");
+			if (digits[i] == -1) {
+				scanError = true;
+			}
+		}
+		System.out.println("");
+				
+		if (scanError) {
+			System.out.println("Scan error");
+			
+		} else { // Scanned in correctly - look at checksum
+		
+			if (verifyCode(digits)) {
+				System.out.println("Passed Checksum");
+			} else {
+				System.out.println("Failed Checksum");
+			}
+		}
+	}
 }
 
