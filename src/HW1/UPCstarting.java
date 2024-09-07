@@ -104,11 +104,7 @@ public class UPCstarting {
 		
 		// digits is an array of 12 ints (0..9)
 		int[] digits = decodeScan(scanPattern);
-		
-		// YOUR CODE HERE TO HANDLE UPSIDE-DOWN SCANS
-		
-		
-		
+				
 		
 		// Display the digits and check for scan errors
 		boolean scanError = false;
