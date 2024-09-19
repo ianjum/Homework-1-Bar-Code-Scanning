@@ -75,6 +75,7 @@ public class UPCstarting {
 		// Note that what the UPC standard calls 'odd' are our evens since we are zero based and they are one based
 		
 		// YOUR CODE HERE...
+		return true;
 	}
 	
 	//--------------------------------------------
