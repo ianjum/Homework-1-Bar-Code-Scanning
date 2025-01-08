@@ -11,9 +11,26 @@ public class UPCstarting {
 	// Returns an int array of the 95 scanned bits
 	//--------------------------------------------
 	public static int[] scanImage(String filename) {
+		// This is what we will return - 95 0s and 1s
+		int[] scanPattern = new int[95];
+				
+		// Scan in the pattern from a barcode image
+		DUImage barCode = new DUImage(filename);
+			
+		// Simply define the starting point for the given scan
+		// The scan is perfectly created so we don't need to
+		//   have them search for it
+		int xoffset = 5;
+		int yoffset = 50;
+		int barWidth = 2;
+
+		// Scan in each bar
+		for (int i=0; i<95; i++) {
+			 
+			//TODO
+		}
 		
-		// YOUR CODE HERE....
-		
+		return scanPattern;
 	}
 	
 	//--------------------------------------------
@@ -100,7 +117,7 @@ public class UPCstarting {
 		for (int i=0; i<scanPattern.length; i++) {
 			System.out.print(scanPattern[i]);
 		}
-		System.out.println(""); // the \n
+		System.out.println(""); 
 				
 		
 		// digits is an array of 12 ints (0..9)
